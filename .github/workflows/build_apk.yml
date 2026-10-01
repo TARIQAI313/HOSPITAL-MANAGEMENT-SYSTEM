@@ -39,19 +39,16 @@ jobs:
       - name: Build Release APK
         run: |
           flutter build apk --release --no-tree-shake-icons --verbose > build.log 2>&1 || true
-          echo "=== LAST 150 LINES OF BUILD LOG ==="
-          tail -n 150 build.log
           if [ ! -f build/app/outputs/flutter-apk/app-release.apk ]; then
-            echo "ERROR: APK was not generated!"
+            echo "Build failed. Pushing build.log to error-log branch..."
+            git config user.name "Cloud Builder"
+            git config user.email "builder@github.actions"
+            git checkout -b error-log
+            git add -f build.log
+            git commit -m "chore: save build error log"
+            git push -f origin error-log || true
             exit 1
           fi
-
-      - name: Upload Build Log
-        if: always()
-        uses: actions/upload-artifact@v4
-        with:
-          name: build-log
-          path: build.log
 
       - name: Upload APK Artifact
         if: success()
