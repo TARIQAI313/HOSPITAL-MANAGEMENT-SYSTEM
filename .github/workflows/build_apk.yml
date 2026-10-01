@@ -37,7 +37,14 @@ jobs:
         run: flutter pub get
 
       - name: Build Release APK
-        run: flutter build apk --release --no-tree-shake-icons
+        run: |
+          flutter build apk --release --no-tree-shake-icons > build.log 2>&1 || true
+          echo "=== LAST 150 LINES OF BUILD LOG ==="
+          tail -n 150 build.log
+          if [ ! -f build/app/outputs/flutter-apk/app-release.apk ]; then
+            echo "ERROR: APK was not generated!"
+            exit 1
+          fi
 
       - name: Upload APK Artifact
         uses: actions/upload-artifact@v4
