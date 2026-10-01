@@ -13,6 +13,25 @@ subprojects {
     project.evaluationDependsOn(":app")
 }
 
+subprojects {
+    project.ext {
+        compileSdkVersion = 34
+        buildToolsVersion = "34.0.0"
+        targetSdkVersion = 34
+        minSdkVersion = 21
+    }
+    plugins.withId("com.android.library") {
+        project.android {
+            compileSdkVersion 34
+            buildToolsVersion "34.0.0"
+            defaultConfig {
+                targetSdkVersion 34
+                minSdkVersion 21
+            }
+        }
+    }
+}
+
 tasks.register("clean", Delete) {
     delete rootProject.buildDir
 }
