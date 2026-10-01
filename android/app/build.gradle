@@ -4,28 +4,9 @@ plugins {
     id "dev.flutter.flutter-gradle-plugin"
 }
 
-def localProperties = new Properties()
-def localPropertiesFile = rootProject.file("local.properties")
-if (localPropertiesFile.exists()) {
-    localPropertiesFile.withReader("UTF-8") { reader ->
-        localProperties.load(reader)
-    }
-}
-
-def flutterVersionCode = localProperties.getProperty("flutter.versionCode")
-if (flutterVersionCode == null) {
-    flutterVersionCode = "1"
-}
-
-def flutterVersionName = localProperties.getProperty("flutter.versionName")
-if (flutterVersionName == null) {
-    flutterVersionName = "1.0.0"
-}
-
 android {
     namespace = "com.auracare.hms"
     compileSdk = 34
-    ndkVersion = flutter.ndkVersion
 
     compileOptions {
         sourceCompatibility = JavaVersion.VERSION_1_8
@@ -40,8 +21,8 @@ android {
         applicationId = "com.auracare.hms"
         minSdk = 21
         targetSdk = 34
-        versionCode = flutterVersionCode.toInteger()
-        versionName = flutterVersionName
+        versionCode = 1
+        versionName = "1.0.0"
         multiDexEnabled = true
     }
 
