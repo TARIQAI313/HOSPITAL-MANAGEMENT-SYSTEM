@@ -1,0 +1,57 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <base href="$FLUTTER_BASE_HREF">
+  <meta charset="UTF-8">
+  <meta content="IE=Edge" http-equiv="X-UA-Compatible">
+  <meta name="description" content="AuraCare - Enterprise Hospital Management & Patient Care Application">
+
+  <!-- iOS meta tags & icons -->
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black">
+  <meta name="apple-mobile-web-app-title" content="AuraCare HMS">
+  <link rel="apple-touch-icon" href="icons/Icon-192.png">
+
+  <!-- Favicon -->
+  <link rel="icon" type="image/png" href="favicon.png"/>
+
+  <title>AuraCare | Hospital Management & Patient Care System</title>
+  <link rel="manifest" href="manifest.json">
+  <style>
+    body {
+      margin: 0;
+      background-color: #F5FAFA;
+      font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+    }
+    .loading {
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      flex-direction: column;
+      color: #236B68;
+    }
+    .spinner {
+      border: 4px solid rgba(72, 201, 197, 0.2);
+      width: 50px;
+      height: 50px;
+      border-radius: 50%;
+      border-left-color: #48C9C5;
+      animation: spin 1s linear infinite;
+      margin-bottom: 20px;
+    }
+    @keyframes spin {
+      0% { transform: rotate(0deg); }
+      100% { transform: rotate(360deg); }
+    }
+  </style>
+</head>
+<body>
+  <div class="loading" id="loading-indicator">
+    <div class="spinner"></div>
+    <div style="font-weight: 600; font-size: 1.1rem; letter-spacing: 0.5px;">AuraCare HMS</div>
+    <div style="font-size: 0.85rem; color: #7B9191; margin-top: 4px;">Loading Healthcare Portal...</div>
+  </div>
+  <script src="flutter_bootstrap.js" async></script>
+</body>
+</html>
