@@ -33,9 +33,6 @@ jobs:
           channel: 'stable'
           cache: true
 
-      - name: Configure Android Platform Files
-        run: flutter create --platforms=android --org=com.auracare .
-
       - name: Install Dependencies
         run: flutter pub get
 
