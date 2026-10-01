@@ -7,6 +7,7 @@ class AppColors {
 
   // Primary Medical Colors
   static const Color primary = Color(0xFF48C9C5);       // Turquoise/Teal
+  static const Color secondary = Color(0xFF236B68);     // Secondary Dark Teal
   static const Color primaryDark = Color(0xFF236B68);   // Dark Teal / Deep Forest
   static const Color primaryLight = Color(0xFFE2F7F6);  // Soft Teal Tint
   static const Color primarySurface = Color(0xFFEDFAF9);// Very subtle teal tint

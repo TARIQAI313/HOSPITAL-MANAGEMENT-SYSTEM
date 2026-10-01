@@ -12,11 +12,6 @@ import '../../../core/widgets/status_badge.dart';
 import '../data/billing_repository.dart';
 import '../domain/invoice_model.dart';
 
-final invoiceListProvider = FutureProvider<List<InvoiceModel>>((ref) async {
-  final repo = ref.watch(billingRepositoryProvider);
-  return repo.getInvoices();
-});
-
 class BillingDashboardScreen extends ConsumerWidget {
   const BillingDashboardScreen({super.key});
 

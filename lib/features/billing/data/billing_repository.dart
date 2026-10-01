@@ -6,6 +6,11 @@ final billingRepositoryProvider = Provider<BillingRepository>((ref) {
   return BillingRepository();
 });
 
+final invoiceListProvider = FutureProvider<List<InvoiceModel>>((ref) async {
+  final repo = ref.watch(billingRepositoryProvider);
+  return repo.getInvoices();
+});
+
 class BillingRepository {
   final List<InvoiceModel> _demoInvoices = [
     InvoiceModel(
