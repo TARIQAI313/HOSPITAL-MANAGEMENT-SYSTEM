@@ -44,11 +44,11 @@ class AppointmentModel {
 
   factory AppointmentModel.fromJson(Map<String, dynamic> json) {
     return AppointmentModel(
-      id: json['id'] as String,
-      patientId: json['patient_id'] as String? ?? '',
+      id: json['id']?.toString() ?? '',
+      patientId: json['patient_id']?.toString() ?? '',
       patientName: json['patients']?['profiles']?['full_name'] as String? ??
           (json['patient_name'] as String? ?? 'Patient'),
-      doctorId: json['doctor_id'] as String? ?? '',
+      doctorId: json['doctor_id']?.toString() ?? '',
       doctorName: json['doctors']?['profiles']?['full_name'] as String? ??
           (json['doctor_name'] as String? ?? 'Dr. Specialist'),
       doctorSpecialty: json['doctors']?['specialty'] as String? ??
@@ -57,7 +57,7 @@ class AppointmentModel {
           json['doctor_avatar'] as String?,
       departmentName: json['departments']?['name'] as String?,
       appointmentDate: json['appointment_date'] != null
-          ? DateTime.parse(json['appointment_date'])
+          ? DateTime.parse(json['appointment_date'].toString())
           : DateTime.now(),
       startTime: json['start_time'] as String? ?? '09:00 AM',
       endTime: json['end_time'] as String? ?? '09:30 AM',
@@ -71,10 +71,37 @@ class AppointmentModel {
   }
 
   Map<String, dynamic> toJson() {
-    return {
+    return toFullJson();
+  }
+
+  Map<String, dynamic> toJsonForSupabase() {
+    final map = <String, dynamic>{
       'patient_id': patientId,
       'doctor_id': doctorId,
       'appointment_date': appointmentDate.toIso8601String().split('T').first,
+      'start_time': startTime,
+      'end_time': endTime,
+      'type': type,
+      'status': status,
+      'reason': reason,
+      'symptoms': symptoms,
+      'notes': notes,
+    };
+    if (queueNumber != null) map['queue_number'] = queueNumber;
+    return map;
+  }
+
+  Map<String, dynamic> toFullJson() {
+    return {
+      'id': id,
+      'patient_id': patientId,
+      'patient_name': patientName,
+      'doctor_id': doctorId,
+      'doctor_name': doctorName,
+      'doctor_specialty': doctorSpecialty,
+      'doctor_avatar': doctorAvatar,
+      'department_name': departmentName,
+      'appointment_date': appointmentDate.toIso8601String(),
       'start_time': startTime,
       'end_time': endTime,
       'type': type,

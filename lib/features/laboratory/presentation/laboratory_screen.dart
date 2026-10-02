@@ -3,6 +3,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../../../core/constants/app_colors.dart';
 import '../../../core/constants/app_spacing.dart';
+import '../../../core/routing/navigation_helper.dart';
+import '../../../core/routing/route_paths.dart';
 import '../../../core/utils/formatters.dart';
 import '../../../core/widgets/app_button.dart';
 import '../../../core/widgets/app_card.dart';
@@ -21,13 +23,15 @@ class LaboratoryScreen extends ConsumerWidget {
     final currentTab = ref.watch(labTabProvider);
     final repo = ref.watch(laboratoryRepositoryProvider);
 
-    return Scaffold(
+    return AppBackScope(
+      fallbackRoute: RoutePaths.home,
+      child: Scaffold(
       backgroundColor: AppColors.background,
       appBar: AppBar(
         title: const Text('Laboratory & Pathology'),
         leading: IconButton(
           icon: const Icon(Icons.arrow_back, color: Colors.white),
-          onPressed: () => context.pop(),
+          onPressed: () => context.safePop(null, RoutePaths.home),
         ),
       ),
       body: Column(
@@ -253,6 +257,7 @@ class LaboratoryScreen extends ConsumerWidget {
           ),
         ],
       ),
-    );
-  }
+    ),
+  );
+}
 }

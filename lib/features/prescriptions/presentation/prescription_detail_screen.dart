@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import '../../../core/constants/app_colors.dart';
 import '../../../core/constants/app_spacing.dart';
+import '../../../core/routing/navigation_helper.dart';
+import '../../../core/routing/route_paths.dart';
 import '../../../core/utils/formatters.dart';
 import '../../../core/widgets/app_button.dart';
 import '../../../core/widgets/app_card.dart';
@@ -52,13 +54,15 @@ class PrescriptionDetailScreen extends StatelessWidget {
       ],
     );
 
-    return Scaffold(
+    return AppBackScope(
+      fallbackRoute: RoutePaths.prescriptions,
+      child: Scaffold(
       backgroundColor: AppColors.background,
       appBar: AppBar(
         title: Text('Prescription ${rx.prescriptionCode}'),
         leading: IconButton(
           icon: const Icon(Icons.arrow_back, color: Colors.white),
-          onPressed: () => context.pop(),
+          onPressed: () => context.safePop(null, RoutePaths.prescriptions),
         ),
         actions: [
           IconButton(
@@ -243,6 +247,7 @@ class PrescriptionDetailScreen extends StatelessWidget {
           ],
         ),
       ),
-    );
-  }
+    ),
+  );
+}
 }

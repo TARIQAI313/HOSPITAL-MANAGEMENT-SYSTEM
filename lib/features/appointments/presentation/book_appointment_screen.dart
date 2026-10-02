@@ -3,6 +3,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../../../core/constants/app_colors.dart';
 import '../../../core/constants/app_spacing.dart';
+import '../../../core/routing/navigation_helper.dart';
+import '../../../core/routing/route_paths.dart';
 import '../../../core/utils/formatters.dart';
 import '../../../core/widgets/app_button.dart';
 import '../../../core/widgets/app_card.dart';
@@ -148,15 +150,17 @@ class _BookAppointmentScreenState extends ConsumerState<BookAppointmentScreen> {
   Widget build(BuildContext context) {
     final doctorsAsync = ref.watch(doctorRepositoryProvider).getDoctors();
 
-    return Scaffold(
-      backgroundColor: AppColors.background,
-      appBar: AppBar(
-        title: const Text('Book Appointment'),
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: Colors.white),
-          onPressed: () => context.pop(),
+    return AppBackScope(
+      fallbackRoute: RoutePaths.appointments,
+      child: Scaffold(
+        backgroundColor: AppColors.background,
+        appBar: AppBar(
+          title: const Text('Book Appointment'),
+          leading: IconButton(
+            icon: const Icon(Icons.arrow_back, color: Colors.white),
+            onPressed: () => context.safePop(null, RoutePaths.appointments),
+          ),
         ),
-      ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(AppSpacing.lg),
         child: Column(
@@ -334,8 +338,9 @@ class _BookAppointmentScreenState extends ConsumerState<BookAppointmentScreen> {
           ],
         ),
       ),
-    );
-  }
+    ),
+  );
+}
 
   Widget _buildModeCard({
     required String type,

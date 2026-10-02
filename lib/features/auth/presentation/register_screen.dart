@@ -7,6 +7,7 @@ import '../../../core/constants/user_roles.dart';
 import '../../../core/utils/validators.dart';
 import '../../../core/widgets/app_button.dart';
 import '../../../core/widgets/app_text_field.dart';
+import '../../../core/routing/navigation_helper.dart';
 import 'auth_controller.dart';
 
 class RegisterScreen extends ConsumerStatefulWidget {
@@ -59,6 +60,11 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
 
     if (success && mounted) {
       context.go('/home');
+    } else if (mounted) {
+      final err = ref.read(authControllerProvider).errorMessage ?? 'Registration failed. Please try again.';
+      ScaffoldMessenger.of(context).showSnackBar(
+        SnackBar(backgroundColor: AppColors.error, content: Text(err)),
+      );
     }
   }
 
@@ -67,9 +73,19 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
     final authState = ref.watch(authControllerProvider);
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
-    return Scaffold(
-      backgroundColor: isDark ? AppColors.darkBackground : AppColors.background,
-      body: SafeArea(
+    return AppBackScope(
+      fallbackRoute: '/login',
+      child: Scaffold(
+        backgroundColor: isDark ? AppColors.darkBackground : AppColors.background,
+        appBar: AppBar(
+          backgroundColor: Colors.transparent,
+          elevation: 0,
+          leading: IconButton(
+            icon: Icon(Icons.arrow_back, color: isDark ? AppColors.darkText : AppColors.text),
+            onPressed: () => context.safePop(),
+          ),
+        ),
+        body: SafeArea(
         child: Center(
           child: SingleChildScrollView(
             padding: const EdgeInsets.symmetric(horizontal: AppSpacing.xxl, vertical: AppSpacing.xl),
@@ -239,7 +255,7 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                           style: TextStyle(color: AppColors.textSecondary, fontSize: 14),
                         ),
                         GestureDetector(
-                          onTap: () => context.go('/login'),
+                          onTap: () => context.safePop(),
                           child: const Text(
                             'Sign In',
                             style: TextStyle(
@@ -258,6 +274,7 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
           ),
         ),
       ),
-    );
+    ),
+  );
   }
 }

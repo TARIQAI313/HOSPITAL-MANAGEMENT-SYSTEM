@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import '../../../core/constants/app_colors.dart';
 import '../../../core/constants/app_spacing.dart';
+import '../../../core/routing/navigation_helper.dart';
+import '../../../core/routing/route_paths.dart';
 import '../../../core/widgets/app_button.dart';
 import '../../../core/widgets/app_card.dart';
 import '../../../core/widgets/avatar_widget.dart';
@@ -38,14 +40,16 @@ class PatientDetailScreen extends StatelessWidget {
       notes: 'Patient exhibits high adherence to medication scheduling.',
     );
 
-    return Scaffold(
-      backgroundColor: AppColors.background,
-      appBar: AppBar(
-        title: const Text('Electronic Medical Record'),
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: Colors.white),
-          onPressed: () => context.pop(),
-        ),
+    return AppBackScope(
+      fallbackRoute: RoutePaths.patients,
+      child: Scaffold(
+        backgroundColor: AppColors.background,
+        appBar: AppBar(
+          title: const Text('Electronic Medical Record'),
+          leading: IconButton(
+            icon: const Icon(Icons.arrow_back, color: Colors.white),
+            onPressed: () => context.safePop(null, RoutePaths.patients),
+          ),
         actions: [
           IconButton(
             icon: const Icon(Icons.edit_outlined),
@@ -220,6 +224,7 @@ class PatientDetailScreen extends StatelessWidget {
           ],
         ),
       ),
-    );
-  }
+    ),
+  );
+}
 }

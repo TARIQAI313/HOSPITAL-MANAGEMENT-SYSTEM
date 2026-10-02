@@ -3,6 +3,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../../../core/constants/app_colors.dart';
 import '../../../core/constants/app_spacing.dart';
+import '../../../core/routing/navigation_helper.dart';
+import '../../../core/routing/route_paths.dart';
 import '../../../core/widgets/app_button.dart';
 import '../../../core/widgets/app_card.dart';
 import '../../../core/widgets/loading_indicator.dart';
@@ -28,13 +30,15 @@ class PharmacyDashboardScreen extends ConsumerWidget {
 
     final categories = ['All', 'Cardiology', 'Antibiotics', 'Gastroenterology'];
 
-    return Scaffold(
+    return AppBackScope(
+      fallbackRoute: RoutePaths.home,
+      child: Scaffold(
       backgroundColor: AppColors.background,
       appBar: AppBar(
         title: const Text('Hospital Pharmacy & Dispensary'),
         leading: IconButton(
           icon: const Icon(Icons.arrow_back, color: Colors.white),
-          onPressed: () => context.pop(),
+          onPressed: () => context.safePop(null, RoutePaths.home),
         ),
       ),
       body: Column(
@@ -162,6 +166,7 @@ class PharmacyDashboardScreen extends ConsumerWidget {
           ),
         ],
       ),
-    );
-  }
+    ),
+  );
+}
 }

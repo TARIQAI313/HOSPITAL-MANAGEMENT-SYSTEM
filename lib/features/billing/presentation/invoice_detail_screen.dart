@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import '../../../core/constants/app_colors.dart';
 import '../../../core/constants/app_spacing.dart';
+import '../../../core/routing/navigation_helper.dart';
+import '../../../core/routing/route_paths.dart';
 import '../../../core/utils/formatters.dart';
 import '../../../core/widgets/app_button.dart';
 import '../../../core/widgets/app_card.dart';
@@ -43,13 +45,15 @@ class InvoiceDetailScreen extends StatelessWidget {
       ],
     );
 
-    return Scaffold(
+    return AppBackScope(
+      fallbackRoute: RoutePaths.billing,
+      child: Scaffold(
       backgroundColor: AppColors.background,
       appBar: AppBar(
         title: Text('Invoice ${inv.invoiceNumber}'),
         leading: IconButton(
           icon: const Icon(Icons.arrow_back, color: Colors.white),
-          onPressed: () => context.pop(),
+          onPressed: () => context.safePop(null, RoutePaths.billing),
         ),
         actions: [
           IconButton(
@@ -168,13 +172,14 @@ class InvoiceDetailScreen extends StatelessWidget {
               text: 'Back to Billing',
               variant: ButtonVariant.outline,
               isFullWidth: true,
-              onPressed: () => context.pop(),
+              onPressed: () => context.safePop(null, RoutePaths.billing),
             ),
           ],
         ),
       ),
-    );
-  }
+    ),
+  );
+}
 
   Widget _buildCostRow(String label, String value, {bool isBold = false, bool isDue = false, bool isDiscount = false}) {
     return Row(

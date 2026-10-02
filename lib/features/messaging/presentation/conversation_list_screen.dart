@@ -3,6 +3,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../../../core/constants/app_colors.dart';
 import '../../../core/constants/app_spacing.dart';
+import '../../../core/routing/navigation_helper.dart';
+import '../../../core/routing/route_paths.dart';
 import '../../../core/utils/formatters.dart';
 import '../../../core/widgets/app_card.dart';
 import '../../../core/widgets/avatar_widget.dart';
@@ -25,7 +27,9 @@ class ConversationListScreen extends ConsumerWidget {
     final conversationsAsync = ref.watch(conversationListProvider);
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
-    return Scaffold(
+    return AppBackScope(
+      fallbackRoute: RoutePaths.home,
+      child: Scaffold(
       backgroundColor: isDark ? AppColors.darkBackground : AppColors.background,
       body: SafeArea(
         child: Column(
@@ -42,7 +46,7 @@ class ConversationListScreen extends ConsumerWidget {
                     children: [
                       IconButton(
                         icon: const Icon(Icons.arrow_back, color: Colors.white),
-                        onPressed: () => context.pop(),
+                        onPressed: () => context.safePop(null, RoutePaths.home),
                       ),
                       const Text(
                         'Messages & Support',
@@ -162,6 +166,7 @@ class ConversationListScreen extends ConsumerWidget {
           ],
         ),
       ),
-    );
-  }
+    ),
+  );
+}
 }

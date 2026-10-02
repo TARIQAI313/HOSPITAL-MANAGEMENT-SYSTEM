@@ -3,6 +3,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../../../core/constants/app_colors.dart';
 import '../../../core/constants/app_spacing.dart';
+import '../../../core/routing/navigation_helper.dart';
+import '../../../core/routing/route_paths.dart';
 import '../../../core/widgets/app_button.dart';
 import '../../../core/widgets/app_text_field.dart';
 import '../data/patient_repository.dart';
@@ -84,21 +86,23 @@ class _EditPatientProfileScreenState extends ConsumerState<EditPatientProfileScr
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Profile information updated successfully.')),
       );
-      context.pop();
+      context.safePop(null, RoutePaths.patients);
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: AppColors.background,
-      appBar: AppBar(
-        title: const Text('Edit Patient Profile'),
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: Colors.white),
-          onPressed: () => context.pop(),
+    return AppBackScope(
+      fallbackRoute: RoutePaths.patients,
+      child: Scaffold(
+        backgroundColor: AppColors.background,
+        appBar: AppBar(
+          title: const Text('Edit Patient Profile'),
+          leading: IconButton(
+            icon: const Icon(Icons.arrow_back, color: Colors.white),
+            onPressed: () => context.safePop(null, RoutePaths.patients),
+          ),
         ),
-      ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(AppSpacing.lg),
         child: Column(
@@ -170,6 +174,7 @@ class _EditPatientProfileScreenState extends ConsumerState<EditPatientProfileScr
           ],
         ),
       ),
-    );
-  }
+    ),
+  );
+}
 }

@@ -3,6 +3,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../../../core/constants/app_colors.dart';
 import '../../../core/constants/app_spacing.dart';
+import '../../../core/routing/navigation_helper.dart';
+import '../../../core/routing/route_paths.dart';
 import '../../../core/utils/formatters.dart';
 import '../../../core/widgets/app_card.dart';
 import '../../../core/widgets/empty_state_view.dart';
@@ -22,13 +24,15 @@ class NotificationCenterScreen extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final notificationsAsync = ref.watch(notificationListProvider);
 
-    return Scaffold(
+    return AppBackScope(
+      fallbackRoute: RoutePaths.home,
+      child: Scaffold(
       backgroundColor: AppColors.background,
       appBar: AppBar(
         title: const Text('Notifications'),
         leading: IconButton(
           icon: const Icon(Icons.arrow_back, color: Colors.white),
-          onPressed: () => context.pop(),
+          onPressed: () => context.safePop(null, RoutePaths.home),
         ),
         actions: [
           TextButton(
@@ -111,8 +115,9 @@ class NotificationCenterScreen extends ConsumerWidget {
           );
         },
       ),
-    );
-  }
+    ),
+  );
+}
 
   IconData _getNotificationIcon(String type) {
     switch (type) {

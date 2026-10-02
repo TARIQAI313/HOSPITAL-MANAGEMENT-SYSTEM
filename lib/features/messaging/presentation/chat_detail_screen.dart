@@ -3,6 +3,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../../../core/constants/app_colors.dart';
 import '../../../core/constants/app_spacing.dart';
+import '../../../core/routing/navigation_helper.dart';
+import '../../../core/routing/route_paths.dart';
 import '../../../core/utils/formatters.dart';
 import '../../../core/widgets/avatar_widget.dart';
 import '../data/chat_repository.dart';
@@ -59,14 +61,16 @@ class _ChatDetailScreenState extends ConsumerState<ChatDetailScreen> {
     final participant = widget.conversationExtra?.participantName ?? 'Dr. Sarah Watson';
     final avatar = widget.conversationExtra?.participantAvatar;
 
-    return Scaffold(
+    return AppBackScope(
+      fallbackRoute: RoutePaths.messages,
+      child: Scaffold(
       backgroundColor: AppColors.background,
       appBar: AppBar(
         backgroundColor: AppColors.primary,
         elevation: 0,
         leading: IconButton(
           icon: const Icon(Icons.arrow_back, color: Colors.white),
-          onPressed: () => context.pop(),
+          onPressed: () => context.safePop(null, RoutePaths.messages),
         ),
         title: Row(
           children: [
@@ -246,6 +250,7 @@ class _ChatDetailScreenState extends ConsumerState<ChatDetailScreen> {
           ],
         ),
       ),
-    );
-  }
+    ),
+  );
+}
 }

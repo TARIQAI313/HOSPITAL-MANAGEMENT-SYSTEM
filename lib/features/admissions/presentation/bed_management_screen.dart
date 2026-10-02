@@ -3,6 +3,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../../../core/constants/app_colors.dart';
 import '../../../core/constants/app_spacing.dart';
+import '../../../core/routing/navigation_helper.dart';
+import '../../../core/routing/route_paths.dart';
 import '../../../core/widgets/app_card.dart';
 import '../../../core/widgets/status_badge.dart';
 import '../domain/bed_management_model.dart';
@@ -82,13 +84,15 @@ class BedManagementScreen extends ConsumerWidget {
 
     final totalOccupied = _beds.where((b) => b.status == 'occupied').length;
 
-    return Scaffold(
+    return AppBackScope(
+      fallbackRoute: RoutePaths.home,
+      child: Scaffold(
       backgroundColor: AppColors.background,
       appBar: AppBar(
         title: const Text('Hospital Wards & Bed Allocation'),
         leading: IconButton(
           icon: const Icon(Icons.arrow_back, color: Colors.white),
-          onPressed: () => context.pop(),
+          onPressed: () => context.safePop(null, RoutePaths.home),
         ),
       ),
       body: Column(
@@ -199,8 +203,9 @@ class BedManagementScreen extends ConsumerWidget {
           ),
         ],
       ),
-    );
-  }
+    ),
+  );
+}
 
   Widget _buildStatItem(String label, String value) {
     return Column(

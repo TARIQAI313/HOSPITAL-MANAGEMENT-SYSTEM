@@ -57,16 +57,26 @@ class MedicationModel {
 
   factory MedicationModel.fromJson(Map<String, dynamic> json) {
     return MedicationModel(
-      id: json['id'] as String,
-      patientId: json['patient_id'] as String? ?? '',
+      id: json['id']?.toString() ?? '',
+      patientId: json['patient_id']?.toString() ?? '',
       name: json['name'] as String? ?? 'Medication',
       form: json['form'] as String? ?? 'Pill',
       dosage: json['dosage'] as String? ?? '',
       colorHex: json['color_hex'] as String? ?? '#48C9C5',
-      startDate: json['start_date'] != null ? DateTime.parse(json['start_date']) : DateTime.now(),
-      endDate: json['end_date'] != null ? DateTime.parse(json['end_date']) : null,
-      scheduleTimes: (json['schedule_times'] as List<dynamic>?)?.map((e) => e.toString()).toList() ?? ['08:00 AM'],
-      timeOfDay: (json['time_of_day'] as List<dynamic>?)?.map((e) => e.toString()).toList() ?? ['morning'],
+      startDate: json['start_date'] != null
+          ? DateTime.parse(json['start_date'].toString())
+          : DateTime.now(),
+      endDate: json['end_date'] != null
+          ? DateTime.parse(json['end_date'].toString())
+          : null,
+      scheduleTimes: (json['schedule_times'] as List<dynamic>?)
+              ?.map((e) => e.toString())
+              .toList() ??
+          ['08:00 AM'],
+      timeOfDay: (json['time_of_day'] as List<dynamic>?)
+              ?.map((e) => e.toString())
+              .toList() ??
+          ['morning'],
       remainingPills: (json['remaining_pills'] as num?)?.toInt() ?? 30,
       refillThreshold: (json['refill_threshold'] as num?)?.toInt() ?? 5,
       isTakenToday: json['is_taken_today'] as bool? ?? false,
@@ -75,6 +85,10 @@ class MedicationModel {
   }
 
   Map<String, dynamic> toJson() {
+    return toFullJson();
+  }
+
+  Map<String, dynamic> toJsonForSupabase() {
     return {
       'patient_id': patientId,
       'name': name,
@@ -86,6 +100,25 @@ class MedicationModel {
       'time_of_day': timeOfDay,
       'remaining_pills': remainingPills,
       'refill_threshold': refillThreshold,
+      'instructions': instructions,
+    };
+  }
+
+  Map<String, dynamic> toFullJson() {
+    return {
+      'id': id,
+      'patient_id': patientId,
+      'name': name,
+      'form': form,
+      'dosage': dosage,
+      'color_hex': colorHex,
+      'start_date': startDate.toIso8601String(),
+      'end_date': endDate?.toIso8601String(),
+      'schedule_times': scheduleTimes,
+      'time_of_day': timeOfDay,
+      'remaining_pills': remainingPills,
+      'refill_threshold': refillThreshold,
+      'is_taken_today': isTakenToday,
       'instructions': instructions,
     };
   }

@@ -3,6 +3,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../../../core/constants/app_colors.dart';
 import '../../../core/constants/app_spacing.dart';
+import '../../../core/routing/navigation_helper.dart';
+import '../../../core/routing/route_paths.dart';
 import '../../../core/widgets/app_card.dart';
 import '../../../core/widgets/empty_state_view.dart';
 import '../../../core/widgets/loading_indicator.dart';
@@ -27,25 +29,27 @@ class PillReminderScreen extends ConsumerWidget {
 
     final now = DateTime.now();
 
-    return Scaffold(
-      backgroundColor: isDark ? AppColors.darkBackground : AppColors.background,
-      body: SafeArea(
-        child: Column(
-          children: [
-            // Top Teal App Bar (Inspired by the Reference UI)
-            Container(
-              padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg, vertical: AppSpacing.md),
-              decoration: const BoxDecoration(
-                gradient: AppColors.tealGradient,
-              ),
-              child: Column(
-                children: [
-                  Row(
-                    children: [
-                      IconButton(
-                        icon: const Icon(Icons.arrow_back, color: Colors.white),
-                        onPressed: () => context.pop(),
-                      ),
+    return AppBackScope(
+      fallbackRoute: RoutePaths.home,
+      child: Scaffold(
+        backgroundColor: isDark ? AppColors.darkBackground : AppColors.background,
+        body: SafeArea(
+          child: Column(
+            children: [
+              // Top Teal App Bar (Inspired by the Reference UI)
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg, vertical: AppSpacing.md),
+                decoration: const BoxDecoration(
+                  gradient: AppColors.tealGradient,
+                ),
+                child: Column(
+                  children: [
+                    Row(
+                      children: [
+                        IconButton(
+                          icon: const Icon(Icons.arrow_back, color: Colors.white),
+                          onPressed: () => context.safePop(null, RoutePaths.home),
+                        ),
                       const Text(
                         'Pills Reminder',
                         style: TextStyle(
@@ -175,8 +179,9 @@ class PillReminderScreen extends ConsumerWidget {
         label: const Text('Add Pill Reminder'),
         onPressed: () => context.push('/medications/add'),
       ),
-    );
-  }
+    ),
+  );
+}
 
   Widget _buildSectionHeader(BuildContext context, String title, IconData icon, String time) {
     return Row(

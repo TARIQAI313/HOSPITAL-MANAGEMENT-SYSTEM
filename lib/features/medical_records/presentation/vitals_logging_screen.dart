@@ -3,6 +3,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../../../core/constants/app_colors.dart';
 import '../../../core/constants/app_spacing.dart';
+import '../../../core/routing/navigation_helper.dart';
+import '../../../core/routing/route_paths.dart';
 import '../../../core/widgets/app_button.dart';
 import '../../../core/widgets/app_card.dart';
 import '../../../core/widgets/app_text_field.dart';
@@ -86,20 +88,22 @@ class _VitalsLoggingScreenState extends ConsumerState<VitalsLoggingScreen> {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Vital signs logged successfully.')),
       );
-      context.pop();
+      context.safePop(null, RoutePaths.medicalHistory);
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: AppColors.background,
-      appBar: AppBar(
-        title: const Text('Log Patient Vitals'),
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: Colors.white),
-          onPressed: () => context.pop(),
-        ),
+    return AppBackScope(
+      fallbackRoute: RoutePaths.medicalHistory,
+      child: Scaffold(
+        backgroundColor: AppColors.background,
+        appBar: AppBar(
+          title: const Text('Log Patient Vitals'),
+          leading: IconButton(
+            icon: const Icon(Icons.arrow_back, color: Colors.white),
+            onPressed: () => context.safePop(null, RoutePaths.medicalHistory),
+          ),
       ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(AppSpacing.lg),
@@ -241,6 +245,7 @@ class _VitalsLoggingScreenState extends ConsumerState<VitalsLoggingScreen> {
           ],
         ),
       ),
-    );
-  }
+    ),
+  );
+}
 }

@@ -4,6 +4,8 @@ import '../constants/app_colors.dart';
 import '../constants/app_constants.dart';
 import '../constants/app_spacing.dart';
 import '../constants/user_roles.dart';
+import '../routing/navigation_helper.dart';
+import '../routing/route_paths.dart';
 
 class NavDestinationItem {
   final String route;
@@ -82,11 +84,7 @@ class ResponsiveScaffold extends StatelessWidget {
           children: [
             NavigationRail(
               selectedIndex: currentIndex.clamp(0, destinations.length - 1),
-              onDestinationSelected: (idx) {
-                if (idx < destinations.length) {
-                  context.go(destinations[idx].route);
-                }
-              },
+              onDestinationSelected: (idx) => _onNavigate(context, idx),
               labelType: NavigationRailLabelType.selected,
               destinations: destinations.map((d) {
                 return NavigationRailDestination(
@@ -104,41 +102,60 @@ class ResponsiveScaffold extends StatelessWidget {
     }
 
     // Mobile layout: Top teal styled AppBar + BottomNavigationBar
-    return Scaffold(
-      appBar: _buildMobileAppBar(context),
-      body: body,
-      floatingActionButton: floatingActionButton,
-      bottomNavigationBar: BottomNavigationBar(
-        currentIndex: currentIndex.clamp(0, destinations.length - 1),
-        onTap: (idx) {
-          if (idx < destinations.length) {
-            context.go(destinations[idx].route);
-          }
-        },
-        type: BottomNavigationBarType.fixed,
-        selectedItemColor: AppColors.primaryDark,
-        unselectedItemColor: AppColors.textSecondary,
-        items: destinations.map((d) {
-          return BottomNavigationBarItem(
-            icon: d.badgeCount != null && d.badgeCount! > 0
-                ? Badge(
-                    label: Text('${d.badgeCount}'),
-                    child: Icon(d.icon),
-                  )
-                : Icon(d.icon),
-            activeIcon: Icon(d.selectedIcon, color: AppColors.primaryDark),
-            label: d.label,
-          );
-        }).toList(),
+    return AppBackScope(
+      fallbackRoute: RoutePaths.home,
+      child: Scaffold(
+        appBar: _buildMobileAppBar(context),
+        body: body,
+        floatingActionButton: floatingActionButton,
+        bottomNavigationBar: BottomNavigationBar(
+          currentIndex: currentIndex.clamp(0, destinations.length - 1),
+          onTap: (idx) => _onNavigate(context, idx),
+          type: BottomNavigationBarType.fixed,
+          selectedItemColor: AppColors.primaryDark,
+          unselectedItemColor: AppColors.textSecondary,
+          items: destinations.map((d) {
+            return BottomNavigationBarItem(
+              icon: d.badgeCount != null && d.badgeCount! > 0
+                  ? Badge(
+                      label: Text('${d.badgeCount}'),
+                      child: Icon(d.icon),
+                    )
+                  : Icon(d.icon),
+              activeIcon: Icon(d.selectedIcon, color: AppColors.primaryDark),
+              label: d.label,
+            );
+          }).toList(),
+        ),
       ),
     );
   }
 
+  void _onNavigate(BuildContext context, int idx) {
+    if (idx < destinations.length) {
+      final dest = destinations[idx];
+      if (dest.route == RoutePaths.home) {
+        if (GoRouterState.of(context).matchedLocation != RoutePaths.home) {
+          context.go(RoutePaths.home);
+        }
+      } else {
+        context.push(dest.route);
+      }
+    }
+  }
+
   PreferredSizeWidget _buildMobileAppBar(BuildContext context) {
+    final canGoBack = context.canPop() || (GoRouterState.of(context).matchedLocation != RoutePaths.home);
     return AppBar(
       title: Text(title ?? 'AuraCare HMS'),
       elevation: 0,
       backgroundColor: AppColors.primary,
+      leading: canGoBack
+          ? IconButton(
+              icon: const Icon(Icons.arrow_back, color: Colors.white),
+              onPressed: () => context.safePop(),
+            )
+          : null,
       actions: [
         if (actions != null) ...actions!,
         IconButton(
@@ -256,7 +273,7 @@ class ResponsiveScaffold extends StatelessWidget {
                     trailing: d.badgeCount != null && d.badgeCount! > 0
                         ? Badge(label: Text('${d.badgeCount}'))
                         : null,
-                    onTap: () => context.go(d.route),
+                    onTap: () => _onNavigate(context, idx),
                   ),
                 );
               },

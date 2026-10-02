@@ -3,6 +3,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../../../core/constants/app_colors.dart';
 import '../../../core/constants/app_spacing.dart';
+import '../../../core/routing/navigation_helper.dart';
+import '../../../core/routing/route_paths.dart';
 import '../../../core/utils/formatters.dart';
 import '../../../core/widgets/app_button.dart';
 import '../../../core/widgets/app_card.dart';
@@ -31,23 +33,25 @@ class AppointmentListScreen extends ConsumerWidget {
     final activeTab = ref.watch(appointmentTabFilterProvider);
     final isDark = Theme.of(context).brightness == Brightness.dark;
 
-    return Scaffold(
-      backgroundColor: isDark ? AppColors.darkBackground : AppColors.background,
-      body: SafeArea(
-        child: Column(
-          children: [
-            // Top Teal App Bar
-            Container(
-              padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg, vertical: AppSpacing.md),
-              decoration: const BoxDecoration(
-                gradient: AppColors.tealGradient,
-              ),
-              child: Row(
-                children: [
-                  IconButton(
-                    icon: const Icon(Icons.arrow_back, color: Colors.white),
-                    onPressed: () => context.pop(),
-                  ),
+    return AppBackScope(
+      fallbackRoute: RoutePaths.home,
+      child: Scaffold(
+        backgroundColor: isDark ? AppColors.darkBackground : AppColors.background,
+        body: SafeArea(
+          child: Column(
+            children: [
+              // Top Teal App Bar
+              Container(
+                padding: const EdgeInsets.symmetric(horizontal: AppSpacing.lg, vertical: AppSpacing.md),
+                decoration: const BoxDecoration(
+                  gradient: AppColors.tealGradient,
+                ),
+                child: Row(
+                  children: [
+                    IconButton(
+                      icon: const Icon(Icons.arrow_back, color: Colors.white),
+                      onPressed: () => context.safePop(null, RoutePaths.home),
+                    ),
                   const Text(
                     'Appointments',
                     style: TextStyle(
@@ -113,8 +117,9 @@ class AppointmentListScreen extends ConsumerWidget {
           ],
         ),
       ),
-    );
-  }
+    ),
+  );
+}
 
   Widget _buildTabItem(
     WidgetRef ref, {

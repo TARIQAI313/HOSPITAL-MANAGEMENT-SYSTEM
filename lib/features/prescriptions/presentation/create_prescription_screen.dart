@@ -3,6 +3,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../../../core/constants/app_colors.dart';
 import '../../../core/constants/app_spacing.dart';
+import '../../../core/routing/navigation_helper.dart';
+import '../../../core/routing/route_paths.dart';
 import '../../../core/widgets/app_button.dart';
 import '../../../core/widgets/app_card.dart';
 import '../../../core/widgets/app_text_field.dart';
@@ -97,21 +99,23 @@ class _CreatePrescriptionScreenState extends ConsumerState<CreatePrescriptionScr
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Digital Prescription created and signed.')),
       );
-      context.pop();
+      context.safePop(null, RoutePaths.prescriptions);
     }
   }
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      backgroundColor: AppColors.background,
-      appBar: AppBar(
-        title: const Text('Write Digital Prescription'),
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: Colors.white),
-          onPressed: () => context.pop(),
+    return AppBackScope(
+      fallbackRoute: RoutePaths.prescriptions,
+      child: Scaffold(
+        backgroundColor: AppColors.background,
+        appBar: AppBar(
+          title: const Text('Write Digital Prescription'),
+          leading: IconButton(
+            icon: const Icon(Icons.arrow_back, color: Colors.white),
+            onPressed: () => context.safePop(null, RoutePaths.prescriptions),
+          ),
         ),
-      ),
       body: SingleChildScrollView(
         padding: const EdgeInsets.all(AppSpacing.lg),
         child: Column(
@@ -264,6 +268,7 @@ class _CreatePrescriptionScreenState extends ConsumerState<CreatePrescriptionScr
           ],
         ),
       ),
-    );
-  }
+    ),
+  );
+}
 }

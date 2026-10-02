@@ -46,6 +46,7 @@ import '../../features/radiology/presentation/radiology_screen.dart';
 import '../../features/reports/presentation/reports_analytics_screen.dart';
 import '../../features/search/presentation/global_search_screen.dart';
 import '../../features/settings/presentation/settings_screen.dart';
+import '../../features/settings/presentation/supabase_config_screen.dart';
 import '../../features/staff/presentation/staff_management_screen.dart';
 import '../../features/telemedicine/presentation/video_call_screen.dart';
 import 'route_paths.dart';
@@ -65,7 +66,8 @@ final appRouterProvider = Provider<GoRouter>((ref) {
           path == RoutePaths.onboarding ||
           path == RoutePaths.login ||
           path == RoutePaths.register ||
-          path == RoutePaths.forgotPassword;
+          path == RoutePaths.forgotPassword ||
+          path == RoutePaths.supabaseConfig;
 
       if (!isAuth && !isPublicRoute) {
         return RoutePaths.login;
@@ -286,6 +288,10 @@ final appRouterProvider = Provider<GoRouter>((ref) {
       GoRoute(
         path: RoutePaths.profile,
         builder: (context, state) => const SettingsScreen(),
+      ),
+      GoRoute(
+        path: RoutePaths.supabaseConfig,
+        builder: (context, state) => const SupabaseConfigScreen(),
       ),
     ],
     errorBuilder: (context, state) => Scaffold(

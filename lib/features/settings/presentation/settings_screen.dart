@@ -5,6 +5,9 @@ import '../../../core/constants/app_colors.dart';
 import '../../../core/constants/app_constants.dart';
 import '../../../core/constants/app_spacing.dart';
 import '../../../core/localization/l10n_provider.dart';
+import '../../../core/network/supabase_client.dart';
+import '../../../core/routing/navigation_helper.dart';
+import '../../../core/routing/route_paths.dart';
 import '../../../core/theme/theme_provider.dart';
 import '../../../core/widgets/app_button.dart';
 import '../../../core/widgets/app_card.dart';
@@ -21,16 +24,17 @@ class SettingsScreen extends ConsumerWidget {
     final authState = ref.watch(authControllerProvider);
     final isDark = themeMode == ThemeMode.dark;
 
-    return Scaffold(
-      backgroundColor: isDark ? AppColors.darkBackground : AppColors.background,
-      appBar: AppBar(
-        title: const Text('Settings & Preferences'),
-        leading: IconButton(
-          icon: const Icon(Icons.arrow_back, color: Colors.white),
-          onPressed: () => context.pop(),
+    return AppBackScope(
+      child: Scaffold(
+        backgroundColor: isDark ? AppColors.darkBackground : AppColors.background,
+        appBar: AppBar(
+          title: const Text('Settings & Preferences'),
+          leading: IconButton(
+            icon: const Icon(Icons.arrow_back, color: Colors.white),
+            onPressed: () => context.safePop(),
+          ),
         ),
-      ),
-      body: SingleChildScrollView(
+        body: SingleChildScrollView(
         padding: const EdgeInsets.all(AppSpacing.lg),
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.start,
@@ -104,6 +108,30 @@ class SettingsScreen extends ConsumerWidget {
                   _buildLanguageOption(ref, label: 'Urdu (اردو)', code: 'ur', currentCode: locale.languageCode),
                   const Divider(height: 1),
                   _buildLanguageOption(ref, label: 'Arabic (العربية)', code: 'ar', currentCode: locale.languageCode),
+                ],
+              ),
+            ),
+            // Database & Cloud Synchronization
+            const Text('Database & Cloud Integration', style: TextStyle(fontSize: 14, fontWeight: FontWeight.bold, color: AppColors.textSecondary)),
+            const SizedBox(height: 8),
+            AppCard(
+              child: Column(
+                children: [
+                  ListTile(
+                    leading: const Icon(Icons.cloud_sync, color: AppColors.primary, size: 22),
+                    title: const Text('Supabase Cloud Database', style: TextStyle(fontSize: 14, fontWeight: FontWeight.w600)),
+                    subtitle: Text(
+                      ref.watch(supabaseStatusProvider)
+                          ? 'Connected: Real-time Cloud Sync Active'
+                          : 'Persistent Local Mode: Tap to connect Cloud',
+                      style: TextStyle(
+                        fontSize: 12,
+                        color: ref.watch(supabaseStatusProvider) ? AppColors.success : AppColors.warning,
+                      ),
+                    ),
+                    trailing: const Icon(Icons.chevron_right, size: 18),
+                    onTap: () => context.push(RoutePaths.supabaseConfig),
+                  ),
                 ],
               ),
             ),

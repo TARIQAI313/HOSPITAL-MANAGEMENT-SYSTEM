@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:go_router/go_router.dart';
 import '../../../core/constants/app_colors.dart';
 import '../../../core/constants/app_spacing.dart';
+import '../../../core/routing/navigation_helper.dart';
+import '../../../core/routing/route_paths.dart';
 import '../../../core/widgets/avatar_widget.dart';
 
 class VideoCallScreen extends StatefulWidget {
@@ -27,8 +29,10 @@ class _VideoCallScreenState extends State<VideoCallScreen> {
     final minutes = (_callDurationSeconds ~/ 60).toString().padLeft(2, '0');
     final seconds = (_callDurationSeconds % 60).toString().padLeft(2, '0');
 
-    return Scaffold(
-      backgroundColor: const Color(0xFF0F172A),
+    return AppBackScope(
+      fallbackRoute: RoutePaths.home,
+      child: Scaffold(
+        backgroundColor: const Color(0xFF0F172A),
       body: SafeArea(
         child: Stack(
           children: [
@@ -120,7 +124,7 @@ class _VideoCallScreenState extends State<VideoCallScreen> {
               left: 20,
               child: IconButton(
                 icon: const Icon(Icons.arrow_back, color: Colors.white),
-                onPressed: () => context.pop(),
+                onPressed: () => context.safePop(null, RoutePaths.home),
               ),
             ),
 
@@ -163,7 +167,7 @@ class _VideoCallScreenState extends State<VideoCallScreen> {
                         // End Call Button
                         GestureDetector(
                           onTap: () {
-                            context.pop();
+                            context.safePop(null, RoutePaths.home);
                             ScaffoldMessenger.of(context).showSnackBar(
                               const SnackBar(content: Text('Telemedicine consultation ended.')),
                             );
@@ -187,8 +191,9 @@ class _VideoCallScreenState extends State<VideoCallScreen> {
           ],
         ),
       ),
-    );
-  }
+    ),
+  );
+}
 
   Widget _buildCallAction({
     required IconData icon,

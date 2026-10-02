@@ -3,6 +3,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:go_router/go_router.dart';
 import '../../../core/constants/app_colors.dart';
 import '../../../core/constants/app_spacing.dart';
+import '../../../core/routing/navigation_helper.dart';
+import '../../../core/routing/route_paths.dart';
 import '../../../core/widgets/app_button.dart';
 import '../../../core/widgets/app_card.dart';
 import '../../../core/widgets/avatar_widget.dart';
@@ -34,19 +36,21 @@ class DoctorProfileScreen extends ConsumerWidget {
           );
         }
 
-        return Scaffold(
-          backgroundColor: AppColors.background,
-          body: CustomScrollView(
-            slivers: [
-              // Teal Header
-              SliverAppBar(
-                expandedHeight: 220,
-                pinned: true,
-                backgroundColor: AppColors.primary,
-                leading: IconButton(
-                  icon: const Icon(Icons.arrow_back, color: Colors.white),
-                  onPressed: () => context.pop(),
-                ),
+        return AppBackScope(
+          fallbackRoute: RoutePaths.doctors,
+          child: Scaffold(
+            backgroundColor: AppColors.background,
+            body: CustomScrollView(
+              slivers: [
+                // Teal Header
+                SliverAppBar(
+                  expandedHeight: 220,
+                  pinned: true,
+                  backgroundColor: AppColors.primary,
+                  leading: IconButton(
+                    icon: const Icon(Icons.arrow_back, color: Colors.white),
+                    onPressed: () => context.safePop(null, RoutePaths.doctors),
+                  ),
                 actions: [
                   IconButton(
                     icon: const Icon(Icons.favorite_border, color: Colors.white),
@@ -240,8 +244,9 @@ class DoctorProfileScreen extends ConsumerWidget {
               ),
             ],
           ),
-        );
-      },
+        ),
+      );
+    },
     );
   }
 

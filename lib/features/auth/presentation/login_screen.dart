@@ -65,6 +65,23 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.stretch,
                   children: [
+                    // Top Bar with Supabase Cloud Status
+                    Align(
+                      alignment: Alignment.topRight,
+                      child: TextButton.icon(
+                        icon: const Icon(Icons.cloud_sync_outlined, size: 16),
+                        label: const Text('Supabase Cloud', style: TextStyle(fontSize: 12, fontWeight: FontWeight.bold)),
+                        style: TextButton.styleFrom(
+                          foregroundColor: AppColors.primaryDark,
+                          padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 4),
+                          backgroundColor: AppColors.primaryLight,
+                          shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(20)),
+                        ),
+                        onPressed: () => context.push('/settings/supabase'),
+                      ),
+                    ),
+                    const SizedBox(height: 12),
+
                     // Hospital Branded Icon
                     Center(
                       child: Container(
@@ -243,7 +260,7 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
                           style: TextStyle(color: AppColors.textSecondary, fontSize: 14),
                         ),
                         GestureDetector(
-                          onTap: () => context.go('/register'),
+                          onTap: () => context.push('/register'),
                           child: const Text(
                             'Create Account',
                             style: TextStyle(
