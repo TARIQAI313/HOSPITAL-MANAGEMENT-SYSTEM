@@ -205,8 +205,9 @@ class SettingsScreen extends ConsumerWidget {
           ],
         ),
       ),
-    );
-  }
+    ),
+  );
+}
 
   Widget _buildLanguageOption(WidgetRef ref, {required String label, required String code, required String currentCode}) {
     final isSelected = code == currentCode;

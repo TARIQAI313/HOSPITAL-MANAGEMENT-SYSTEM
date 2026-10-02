@@ -139,6 +139,7 @@ class _ChatDetailScreenState extends ConsumerState<ChatDetailScreen> {
           _buildInputBar(),
         ],
       ),
+      ),
     );
   }
 
@@ -250,7 +251,6 @@ class _ChatDetailScreenState extends ConsumerState<ChatDetailScreen> {
           ],
         ),
       ),
-    ),
-  );
-}
+    );
+  }
 }

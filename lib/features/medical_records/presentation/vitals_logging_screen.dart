@@ -88,21 +88,21 @@ class _VitalsLoggingScreenState extends ConsumerState<VitalsLoggingScreen> {
       ScaffoldMessenger.of(context).showSnackBar(
         const SnackBar(content: Text('Vital signs logged successfully.')),
       );
-      context.safePop(null, RoutePaths.medicalHistory);
+      context.safePop(null, RoutePaths.medicalRecords);
     }
   }
 
   @override
   Widget build(BuildContext context) {
     return AppBackScope(
-      fallbackRoute: RoutePaths.medicalHistory,
+      fallbackRoute: RoutePaths.medicalRecords,
       child: Scaffold(
         backgroundColor: AppColors.background,
         appBar: AppBar(
           title: const Text('Log Patient Vitals'),
           leading: IconButton(
             icon: const Icon(Icons.arrow_back, color: Colors.white),
-            onPressed: () => context.safePop(null, RoutePaths.medicalHistory),
+            onPressed: () => context.safePop(null, RoutePaths.medicalRecords),
           ),
       ),
       body: SingleChildScrollView(
